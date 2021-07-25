@@ -2,7 +2,7 @@
 
 ## A JavaScript game using HTML Canvas.
 
-[View the calculator live](https://skillitzimberg.github.io/snake-game/).  
+[Play the game!!!](https://skillitzimberg.github.io/snake-game/).  
 ![](./snake-game.png)
 
 ## Summary
