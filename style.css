@@ -1,0 +1,12 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+header {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-evenly;
+  border-bottom: 1px solid #333;
+}
