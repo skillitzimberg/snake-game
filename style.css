@@ -4,9 +4,22 @@
   box-sizing: border-box;
 }
 
+body {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-evenly;
+  height: 100%;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 1.5em;
+}
+
 header {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-evenly;
   border-bottom: 1px solid #333;
+}
+
+footer > p {
+  text-align: center;
 }
