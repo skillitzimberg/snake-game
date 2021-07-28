@@ -20,6 +20,13 @@ header {
   border-bottom: 1px solid #333;
 }
 
+canvas {
+  width: 95%;
+  height: 95%;
+  border: 1px solid #333;
+  margin: 0 auto;
+}
+
 footer > p {
   text-align: center;
 }
