@@ -17,10 +17,12 @@
 - As a PLAYER I want to see a snake's head on the board
   - draw a shape to represent the snake's head
 - As a PLAYER I want to be able to move the snake's head
-  - move the head left with left arrow
-  - move the head right with right arrow
-  - move the head up with up arrow
-  - move the head down with down arrow
+  - head moves ONLY up, down, left, or right
+  - head does NOT move diagonally
+    - move the head left with left arrow
+    - move the head right with right arrow
+    - move the head up with up arrow
+    - move the head down with down arrow
 - As a PLAYER I want to see an apple on the board
   - draw a shape to represent an apple
 - As a PLAYER I want to see the snake grow a tail when it eats the apple
