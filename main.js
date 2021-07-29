@@ -21,6 +21,7 @@ function handleArrowKey(direction) {
 
 class SnakeGame {
   intervalId;
+
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
     this.center = {
@@ -28,10 +29,11 @@ class SnakeGame {
       height: canvas.height / 2,
     };
     this.snake = {
-      posX: this.center.width,
-      posY: this.center.height,
+      headX: this.center.width - 100,
+      headY: this.center.height,
+      length: 150,
+      speed: 1000 / 300,
     };
-    this.snakeSpeed = 1000 / 300;
   }
 
   drawBoard() {
@@ -41,38 +43,42 @@ class SnakeGame {
 
   drawSnake() {
     this.ctx.fillStyle = "green";
-    this.ctx.fillRect(this.snake.posX, this.snake.posY, 10, 10);
+    this.ctx.fillRect(this.snake.headX, this.snake.headY, 10, 10);
+    for (let i = 0; i < this.snake.length; i++) {
+      this.ctx.fillStyle = "green";
+      this.ctx.fillRect(this.snake.headX - i + 1, this.snake.headY, 10, 10);
+    }
   }
 
   moveSnakeUp() {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
-      () => ((this.snake.posY -= 1), this.renderGame()),
-      this.snakeSpeed
+      () => ((this.snake.headY -= 1), this.renderGame()),
+      this.snake.speed
     );
   }
 
   moveSnakeDown() {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
-      () => ((this.snake.posY += 1), this.renderGame()),
-      this.snakeSpeed
+      () => ((this.snake.headY += 1), this.renderGame()),
+      this.snake.speed
     );
   }
 
   moveSnakeLeft() {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
-      () => ((this.snake.posX -= 1), this.renderGame()),
-      this.snakeSpeed
+      () => ((this.snake.headX -= 1), this.renderGame()),
+      this.snake.speed
     );
   }
 
   moveSnakeRight() {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
-      () => ((this.snake.posX += 1), this.renderGame()),
-      this.snakeSpeed
+      () => ((this.snake.headX += 1), this.renderGame()),
+      this.snake.speed
     );
   }
 
