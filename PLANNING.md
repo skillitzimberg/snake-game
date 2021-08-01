@@ -25,6 +25,8 @@
     - move the head down with down arrow
 - As a PLAYER I want the snake to have more than just a head
   - give the snake a default length of 5 units
+- As a PLAYER I want the snake's body to follow the head around turns
+  - each body segment should take the head's position in turn
 - As a PLAYER I want to see an apple on the board
   - draw a shape to represent an apple
 - As a PLAYER I want to see the snake grow a tail when it eats the apple
@@ -33,3 +35,5 @@
 ## Things I Did NOT Plan For Or Know About
 
 ## Googled
+
+`javascript get value without reference'
