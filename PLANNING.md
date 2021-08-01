@@ -37,7 +37,7 @@
   - if the snake is going LEFT, the RIGHT arrow should not work
 - As a PLAYER I want to see an apple on the board
   - draw a shape to represent an apple
-- As a PLAYER I want to see the snake grow a tail when it eats the apple
+- As a PLAYER I want to see the snake gget longer when it eats the apple
   - add a new segment to the snake head when it touches the apples
 
 ## Things I Did NOT Plan For Or Know About
