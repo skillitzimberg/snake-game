@@ -27,6 +27,9 @@
   - give the snake a default length of 5 units
 - As a PLAYER I want the snake's body to follow the head around turns
   - each body segment should take the head's position in turn
+- As a PLAYER I want the snake to stay within the board
+  - if the snake touches a boundary the game should stop
+  - tell the user the game is over
 - As a PLAYER I want to see an apple on the board
   - draw a shape to represent an apple
 - As a PLAYER I want to see the snake grow a tail when it eats the apple

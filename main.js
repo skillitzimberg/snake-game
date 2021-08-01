@@ -1,20 +1,27 @@
 const canvas = document.getElementById("board");
+const display = document.getElementById("display");
+display.addEventListener("click", (e) => {
+  if (e.target.id === "reset") {
+    this.display.classList.toggle("hidden");
+    game = newGame();
+  }
+});
 const page = document.getElementsByTagName("body")[0];
 page.addEventListener("keydown", (e) => handleArrowKey(e.key));
 
 function handleArrowKey(direction) {
   switch (direction) {
     case "ArrowUp":
-      snakeGame.moveSnakeUp();
+      game.moveSnakeUp();
       break;
     case "ArrowDown":
-      snakeGame.moveSnakeDown();
+      game.moveSnakeDown();
       break;
     case "ArrowLeft":
-      snakeGame.moveSnakeLeft();
+      game.moveSnakeLeft();
       break;
     case "ArrowRight":
-      snakeGame.moveSnakeRight();
+      game.moveSnakeRight();
       break;
   }
 }
@@ -94,12 +101,13 @@ class Snake {
 class SnakeGame {
   intervalId;
 
-  constructor(canvas) {
+  constructor(canvas, display) {
     this.ctx = canvas.getContext("2d");
     this.center = {
       width: canvas.width / 2,
       height: canvas.height / 2,
     };
+    this.display = display;
     this.gameParams = {
       headX: this.center.width - 100,
       headY: this.center.height,
@@ -136,7 +144,7 @@ class SnakeGame {
   moveSnakeUp() {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
-      () => (this.snake.moveUp(), this.redrawGame()),
+      () => (this.snake.moveUp(), this.redraw()),
       this.gameParams.speed
     );
   }
@@ -144,7 +152,7 @@ class SnakeGame {
   moveSnakeDown() {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
-      () => (this.snake.moveDown(), this.redrawGame()),
+      () => (this.snake.moveDown(), this.redraw()),
       this.gameParams.speed
     );
   }
@@ -152,7 +160,7 @@ class SnakeGame {
   moveSnakeRight() {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
-      () => (this.snake.moveRight(), this.redrawGame()),
+      () => (this.snake.moveRight(), this.redraw()),
       this.gameParams.speed
     );
   }
@@ -160,21 +168,46 @@ class SnakeGame {
   moveSnakeLeft() {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
-      () => (this.snake.moveLeft(), this.redrawGame()),
+      () => (this.snake.moveLeft(), this.redraw()),
       this.gameParams.speed
     );
   }
 
-  redrawGame() {
+  redraw() {
+    this.handleOutOfBounds();
     this.drawBoard();
     this.drawSnake();
   }
 
-  initiateGame() {
+  isOutOfBounds() {
+    if (
+      this.snake.head.position.x <= 0 ||
+      this.snake.head.position.x >= canvas.width ||
+      this.snake.head.position.y <= 0 ||
+      this.snake.head.position.y >= canvas.height
+    ) {
+      return true;
+    }
+    return false;
+  }
+
+  handleOutOfBounds() {
+    if (this.isOutOfBounds()) {
+      clearInterval(this.intervalId);
+      this.display.classList.toggle("hidden");
+    }
+  }
+
+  initiateGame(snakeLength) {
     this.drawBoard();
-    this.initiateSnake(10);
+    this.initiateSnake(snakeLength);
   }
 }
 
-const snakeGame = new SnakeGame(canvas);
-snakeGame.initiateGame();
+function newGame() {
+  const snakeGame = new SnakeGame(canvas, display);
+  snakeGame.initiateGame(10);
+  return snakeGame;
+}
+
+let game = newGame();

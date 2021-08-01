@@ -4,7 +4,7 @@
   box-sizing: border-box;
 }
 
-body {
+main {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-evenly;
@@ -29,4 +29,30 @@ canvas {
 
 footer > p {
   text-align: center;
+}
+
+#display {
+  position: fixed;
+  top: 12em;
+  left: 15em;
+}
+
+#game-over {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  color: red;
+  font-size: 4em;
+}
+
+#reset {
+  width: 100%;
+  text-align: center;
+  margin: 0 auto;
+  color: white;
+  font-size: 2em;
+}
+
+.hidden {
+  display: none;
 }
