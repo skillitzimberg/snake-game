@@ -52,21 +52,19 @@ class Snake {
 
   moveUp() {
     let current = this.head;
+    let startingPos = Object.assign({}, current.position);
 
     while (current !== null) {
-      let startingPos = Object.assign({}, current);
-
       // If current is the head . . .
       if (current.prev === null) {
         current.position.posY -= 10;
         current = current.next;
       } else {
         current.position = startingPos;
-      }
-
-      current = current.next;
-      if (current !== null) {
-        startingPos = Object.assign({}, current.position);
+        current = current.next;
+        if (current !== null) {
+          startingPos = Object.assign({}, current.position);
+        }
       }
     }
   }
