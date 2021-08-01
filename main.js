@@ -36,11 +36,9 @@ class Snake {
 
   addHead(position) {
     let newHead = new SnakeSegment(position);
-
     this.head.prev = newHead;
     newHead.next = this.head;
     this.head = newHead;
-    console.log(this);
   }
 
   removeTail() {
@@ -70,6 +68,13 @@ class Snake {
     this.addHead(newPos);
     this.removeTail();
   }
+
+  moveDown() {
+    let newPos = Object.assign({}, this.head.position);
+    newPos.y += 10;
+    this.addHead(newPos);
+    this.removeTail();
+  }
 }
 
 class SnakeGame {
@@ -81,11 +86,11 @@ class SnakeGame {
       width: canvas.width / 2,
       height: canvas.height / 2,
     };
-    this.snakeDetails = {
+    this.gameParams = {
       headX: this.center.width - 100,
       headY: this.center.height,
       length: 150,
-      speed: 1000 / 300,
+      speed: 1000 / 30,
     };
     this.snake = new Snake();
   }
@@ -98,8 +103,8 @@ class SnakeGame {
   initiateSnake(initialLength) {
     for (let i = 0; i < initialLength; i++) {
       this.snake.grow({
-        x: this.snakeDetails.headX - 10 * i,
-        y: this.snakeDetails.headY,
+        x: this.gameParams.headX - 10 * i,
+        y: this.gameParams.headY,
       });
     }
     this.drawSnake();
@@ -115,8 +120,19 @@ class SnakeGame {
   }
 
   moveSnakeUp() {
-    this.snake.moveUp();
-    this.redrawGame();
+    clearInterval(this.intervalId);
+    setInterval(
+      () => (this.snake.moveUp(), this.redrawGame()),
+      this.gameParams.speed
+    );
+  }
+
+  moveSnakeDown() {
+    clearInterval(this.intervalId);
+    setInterval(
+      () => (this.snake.moveDown(), this.redrawGame()),
+      this.gameParams.speed
+    );
   }
 
   redrawGame() {
