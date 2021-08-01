@@ -127,6 +127,11 @@ class SnakeGame {
     this.ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
+  drawApple() {
+    this.ctx.fillStyle = "red";
+    this.ctx.fillRect(this.center.width, this.center.height, 10, 10);
+  }
+
   initiateSnake(initialLength) {
     for (let i = 0; i < initialLength; i++) {
       this.snake.grow({
@@ -189,6 +194,7 @@ class SnakeGame {
   redraw() {
     this.handleOutOfBounds();
     this.drawBoard();
+    this.drawApple();
     this.drawSnake();
   }
 
@@ -213,6 +219,7 @@ class SnakeGame {
 
   initiateGame() {
     this.drawBoard();
+    this.drawApple();
     this.initiateSnake(this.gameParams.snakeLength);
   }
 }
