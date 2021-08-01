@@ -1,4 +1,7 @@
 const canvas = document.getElementById("board");
+const page = document.getElementsByTagName("body")[0];
+page.addEventListener("keydown", (e) => handleArrowKey(e.key));
+
 const display = document.getElementById("display");
 display.addEventListener("click", (e) => {
   if (e.target.id === "reset") {
@@ -6,8 +9,8 @@ display.addEventListener("click", (e) => {
     game = newGame();
   }
 });
-const page = document.getElementsByTagName("body")[0];
-page.addEventListener("keydown", (e) => handleArrowKey(e.key));
+
+const scoreBoard = document.getElementById("score");
 
 function handleArrowKey(direction) {
   switch (direction) {
@@ -23,6 +26,11 @@ function handleArrowKey(direction) {
     case "ArrowRight":
       game.moveSnakeRight();
       break;
+  }
+}
+class Apple {
+  constructor(position) {
+    this.position = position;
   }
 }
 
@@ -105,38 +113,35 @@ class Snake {
   }
 }
 
-class Apple {
-  constructor(position) {
-    this.position = position;
-  }
-}
-
 class SnakeGame {
   intervalId;
 
-  constructor(canvas, display) {
+  constructor(canvas, display, scoreBoard) {
     this.ctx = canvas.getContext("2d");
-    this.center = {
+    this.canvasCenter = {
       x: canvas.width / 2,
       y: canvas.height / 2,
     };
     this.display = display;
-    this.gameParams = {
+    this.scoreBoard = scoreBoard;
+    this.params = {
       snakeStart: {
-        x: this.center.x - 100,
-        y: this.center.y,
+        x: this.canvasCenter.x - 100,
+        y: this.canvasCenter.y,
       },
       snakeLength: 10,
-      speed: 1000 / 10,
+      snakeSpeed: 1000 / 10,
+      gamePieceWidth: 10,
     };
     this.snake = new Snake();
-    this.apple = new Apple(this.center);
+    this.apple = new Apple(this.canvasCenter);
+    this.score = 0;
   }
 
   initiateGame() {
     this.drawBoard();
     this.drawApple();
-    this.initiateSnake(this.gameParams.snakeLength, this.gameParams.snakeStart);
+    this.initiateSnake(this.params.snakeLength, this.params.snakeStart);
   }
 
   drawBoard() {
@@ -146,7 +151,12 @@ class SnakeGame {
 
   drawApple() {
     this.ctx.fillStyle = "red";
-    this.ctx.fillRect(this.apple.position.x, this.apple.position.y, 10, 10);
+    this.ctx.fillRect(
+      this.apple.position.x,
+      this.apple.position.y,
+      this.params.gamePieceWidth,
+      this.params.gamePieceWidth
+    );
   }
 
   initiateSnake(initialLength, position) {
@@ -163,7 +173,12 @@ class SnakeGame {
     let current = this.snake.head;
     while (current !== null) {
       this.ctx.fillStyle = "green";
-      this.ctx.fillRect(current.position.x, current.position.y, 20, 20);
+      this.ctx.fillRect(
+        current.position.x,
+        current.position.y,
+        this.params.gamePieceWidth,
+        this.params.gamePieceWidth
+      );
       current = current.next;
     }
   }
@@ -174,7 +189,7 @@ class SnakeGame {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
       () => (this.snake.moveUp(), this.redraw()),
-      this.gameParams.speed
+      this.params.snakeSpeed
     );
   }
 
@@ -184,7 +199,7 @@ class SnakeGame {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
       () => (this.snake.moveDown(), this.redraw()),
-      this.gameParams.speed
+      this.params.snakeSpeed
     );
   }
 
@@ -194,7 +209,7 @@ class SnakeGame {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
       () => (this.snake.moveRight(), this.redraw()),
-      this.gameParams.speed
+      this.params.snakeSpeed
     );
   }
 
@@ -204,7 +219,7 @@ class SnakeGame {
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
       () => (this.snake.moveLeft(), this.redraw()),
-      this.gameParams.speed
+      this.params.snakeSpeed
     );
   }
 
@@ -246,7 +261,11 @@ class SnakeGame {
   }
 
   handleEatingApple() {
+    console.log(this.score);
     if (this.isAppleEaten()) {
+      this.score++;
+      this.scoreBoard.innerText = `${this.score}`;
+      console.log(this.scoreBoard);
       this.growSnake();
     }
   }
@@ -273,11 +292,25 @@ class SnakeGame {
     }
   }
 }
+function resizeCanvasToDisplaySize(canvas) {
+  // look up the size the canvas is being displayed
+  const clientWidth = canvas.clientWidth;
+  const clientHeight = canvas.clientHeight;
+
+  // If it's resolution does not match change it
+  if (canvas.width !== clientWidth || canvas.height !== clientHeight) {
+    canvas.width = clientWidth;
+    canvas.height = clientHeight;
+    return true;
+  }
+
+  return false;
+}
 
 function newGame() {
-  const snakeGame = new SnakeGame(canvas, display);
+  const snakeGame = new SnakeGame(canvas, display, scoreBoard);
   snakeGame.initiateGame();
   return snakeGame;
 }
-
+resizeCanvasToDisplaySize(canvas);
 let game = newGame();

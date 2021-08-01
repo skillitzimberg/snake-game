@@ -37,11 +37,33 @@
   - if the snake is going LEFT, the RIGHT arrow should not work
 - As a PLAYER I want to see an apple on the board
   - draw a shape to represent an apple
-- As a PLAYER I want to see the snake gget longer when it eats the apple
+- As a PLAYER I want to see the snake get longer when it eats the apple
+
   - add a new segment to the snake head when it touches the apples
+
+- As a PLAYER I want to know my score
+  - add a score property to the game class
+  - increment when the apple is eaten
+  - display in scoreboard
 
 ## Things I Did NOT Plan For Or Know About
 
+- Trying to get the snake to always be the same width/length no matter which direction it's going
+- knowing when shape areas overlap so I can count scores.
+
 ## Googled
 
-`javascript get value without reference'
+- `deep copy an object javascript`
+
+  - https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/assign
+
+- `deep copy a linked list javascript`
+
+  - https://medium.com/spotthedifference/deep-copy-a-linked-list-b90d8376223f
+
+- `javascript get value without reference`
+
+  - https://codeburst.io/explaining-value-vs-reference-in-javascript-647a975e12a0
+
+- `html canvas consistent rectangle size`
+  - https://stackoverflow.com/questions/4938346/canvas-width-and-height-in-html5
