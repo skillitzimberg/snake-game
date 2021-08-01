@@ -57,7 +57,7 @@ class Snake {
     while (current !== null) {
       // If current is the head . . .
       if (current.prev === null) {
-        current.position.posY -= 10;
+        current.position.y -= 10;
         current = current.next;
       } else {
         current.position = startingPos;
@@ -96,8 +96,8 @@ class SnakeGame {
   initiateSnake(initialLength) {
     for (let i = 0; i < initialLength; i++) {
       this.snake.grow({
-        posX: this.snakeDetails.headX - 10 * i,
-        posY: this.snakeDetails.headY,
+        x: this.snakeDetails.headX - 10 * i,
+        y: this.snakeDetails.headY,
       });
     }
     this.drawSnake();
@@ -107,7 +107,7 @@ class SnakeGame {
     let current = this.snake.head;
     while (current !== null) {
       this.ctx.fillStyle = "green";
-      this.ctx.fillRect(current.position.posX, current.position.posY, 10, 10);
+      this.ctx.fillRect(current.position.x, current.position.y, 10, 10);
       current = current.next;
     }
   }
