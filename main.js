@@ -34,6 +34,20 @@ class Snake {
     this.length = 0;
   }
 
+  addHead(position) {
+    let newHead = new SnakeSegment(position);
+
+    this.head.prev = newHead;
+    newHead.next = this.head;
+    this.head = newHead;
+    console.log(this);
+  }
+
+  removeTail() {
+    this.tail = this.tail.prev;
+    this.tail.next = null;
+  }
+
   grow(position) {
     let newSegment = new SnakeSegment(position);
 
@@ -51,22 +65,10 @@ class Snake {
   }
 
   moveUp() {
-    let current = this.head;
-    let startingPos = Object.assign({}, current.position);
-
-    while (current !== null) {
-      // If current is the head . . .
-      if (current.prev === null) {
-        current.position.y -= 10;
-        current = current.next;
-      } else {
-        current.position = startingPos;
-        current = current.next;
-        if (current !== null) {
-          startingPos = Object.assign({}, current.position);
-        }
-      }
-    }
+    let newPos = Object.assign({}, this.head.position);
+    newPos.y -= 10;
+    this.addHead(newPos);
+    this.removeTail();
   }
 }
 
