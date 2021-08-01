@@ -75,6 +75,13 @@ class Snake {
     this.addHead(newPos);
     this.removeTail();
   }
+
+  moveRight() {
+    let newPos = Object.assign({}, this.head.position);
+    newPos.x += 10;
+    this.addHead(newPos);
+    this.removeTail();
+  }
 }
 
 class SnakeGame {
@@ -131,6 +138,14 @@ class SnakeGame {
     clearInterval(this.intervalId);
     setInterval(
       () => (this.snake.moveDown(), this.redrawGame()),
+      this.gameParams.speed
+    );
+  }
+
+  moveSnakeRight() {
+    clearInterval(this.intervalId);
+    setInterval(
+      () => (this.snake.moveRight(), this.redrawGame()),
       this.gameParams.speed
     );
   }
