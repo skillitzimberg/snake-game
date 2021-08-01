@@ -82,6 +82,13 @@ class Snake {
     this.addHead(newPos);
     this.removeTail();
   }
+
+  moveLeft() {
+    let newPos = Object.assign({}, this.head.position);
+    newPos.x -= 10;
+    this.addHead(newPos);
+    this.removeTail();
+  }
 }
 
 class SnakeGame {
@@ -97,7 +104,7 @@ class SnakeGame {
       headX: this.center.width - 100,
       headY: this.center.height,
       length: 150,
-      speed: 1000 / 30,
+      speed: 1000 / 10,
     };
     this.snake = new Snake();
   }
@@ -128,7 +135,7 @@ class SnakeGame {
 
   moveSnakeUp() {
     clearInterval(this.intervalId);
-    setInterval(
+    this.intervalId = setInterval(
       () => (this.snake.moveUp(), this.redrawGame()),
       this.gameParams.speed
     );
@@ -136,7 +143,7 @@ class SnakeGame {
 
   moveSnakeDown() {
     clearInterval(this.intervalId);
-    setInterval(
+    this.intervalId = setInterval(
       () => (this.snake.moveDown(), this.redrawGame()),
       this.gameParams.speed
     );
@@ -144,8 +151,16 @@ class SnakeGame {
 
   moveSnakeRight() {
     clearInterval(this.intervalId);
-    setInterval(
+    this.intervalId = setInterval(
       () => (this.snake.moveRight(), this.redrawGame()),
+      this.gameParams.speed
+    );
+  }
+
+  moveSnakeLeft() {
+    clearInterval(this.intervalId);
+    this.intervalId = setInterval(
+      () => (this.snake.moveLeft(), this.redrawGame()),
       this.gameParams.speed
     );
   }
@@ -157,7 +172,7 @@ class SnakeGame {
 
   initiateGame() {
     this.drawBoard();
-    this.initiateSnake(5);
+    this.initiateSnake(10);
   }
 }
 
