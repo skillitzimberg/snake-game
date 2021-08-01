@@ -39,6 +39,7 @@ class Snake {
     this.head = null;
     this.tail = null;
     this.length = 0;
+    this.direction = "";
   }
 
   addHead(position) {
@@ -70,6 +71,7 @@ class Snake {
   }
 
   moveUp() {
+    this.direction = "UP";
     let newPos = Object.assign({}, this.head.position);
     newPos.y -= 10;
     this.addHead(newPos);
@@ -77,6 +79,7 @@ class Snake {
   }
 
   moveDown() {
+    this.direction = "DOWN";
     let newPos = Object.assign({}, this.head.position);
     newPos.y += 10;
     this.addHead(newPos);
@@ -84,6 +87,7 @@ class Snake {
   }
 
   moveRight() {
+    this.direction = "RIGHT";
     let newPos = Object.assign({}, this.head.position);
     newPos.x += 10;
     this.addHead(newPos);
@@ -91,6 +95,7 @@ class Snake {
   }
 
   moveLeft() {
+    this.direction = "LEFT";
     let newPos = Object.assign({}, this.head.position);
     newPos.x -= 10;
     this.addHead(newPos);
@@ -111,8 +116,8 @@ class SnakeGame {
     this.gameParams = {
       headX: this.center.width - 100,
       headY: this.center.height,
-      length: 150,
-      speed: 1000 / 10,
+      snakeLength: 10,
+      speed: 1000 / 20,
     };
     this.snake = new Snake();
   }
@@ -142,6 +147,8 @@ class SnakeGame {
   }
 
   moveSnakeUp() {
+    if (this.snake.direction === "DOWN") return;
+
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
       () => (this.snake.moveUp(), this.redraw()),
@@ -150,6 +157,8 @@ class SnakeGame {
   }
 
   moveSnakeDown() {
+    if (this.snake.direction === "UP") return;
+
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
       () => (this.snake.moveDown(), this.redraw()),
@@ -158,6 +167,8 @@ class SnakeGame {
   }
 
   moveSnakeRight() {
+    if (this.snake.direction === "LEFT") return;
+
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
       () => (this.snake.moveRight(), this.redraw()),
@@ -166,6 +177,8 @@ class SnakeGame {
   }
 
   moveSnakeLeft() {
+    if (this.snake.direction === "RIGHT") return;
+
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
       () => (this.snake.moveLeft(), this.redraw()),
@@ -198,15 +211,15 @@ class SnakeGame {
     }
   }
 
-  initiateGame(snakeLength) {
+  initiateGame() {
     this.drawBoard();
-    this.initiateSnake(snakeLength);
+    this.initiateSnake(this.gameParams.snakeLength);
   }
 }
 
 function newGame() {
   const snakeGame = new SnakeGame(canvas, display);
-  snakeGame.initiateGame(10);
+  snakeGame.initiateGame();
   return snakeGame;
 }
 

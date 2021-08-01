@@ -30,6 +30,11 @@
 - As a PLAYER I want the snake to stay within the board
   - if the snake touches a boundary the game should stop
   - tell the user the game is over
+- As a PLAYER I do NOT want the snake to be able to back up over itself
+  - if the snake is going UP, the DOWN arrow should not work
+  - if the snake is going DOWN, the UP arrow should not work
+  - if the snake is going RIGHT, the LEFT arrow should not work
+  - if the snake is going LEFT, the RIGHT arrow should not work
 - As a PLAYER I want to see an apple on the board
   - draw a shape to represent an apple
 - As a PLAYER I want to see the snake grow a tail when it eats the apple
