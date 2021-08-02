@@ -1,3 +1,5 @@
+const DEV = true;
+
 const canvas = document.getElementById("board");
 const page = document.getElementsByTagName("body")[0];
 page.addEventListener("keydown", (e) => handleArrowKey(e.key));
@@ -29,8 +31,12 @@ function handleArrowKey(direction) {
   }
 }
 class Apple {
-  constructor(position) {
-    this.position = position;
+  constructor(xMax, yMax) {
+    this.position = {
+      x: Math.floor(Math.random() * xMax),
+      y: Math.floor(Math.random() * yMax),
+    };
+    console.log(this.position);
   }
 }
 
@@ -129,29 +135,45 @@ class SnakeGame {
   constructor(canvas, display, scoreBoard) {
     this.ctx = canvas.getContext("2d");
     this.canvasCenter = {
-      x: canvas.width / 2,
-      y: canvas.height / 2,
+      x: Math.floor(canvas.width / 2),
+      y: Math.floor(canvas.height / 2),
     };
     this.display = display;
     this.scoreBoard = scoreBoard;
-    this.params = {
-      snakeStart: {
-        x: this.canvasCenter.x - 100,
-        y: this.canvasCenter.y,
-      },
-      snakeLength: 100,
-      snakeSpeed: 1000 / 10,
-      gamePieceWidth: 10,
-    };
     this.snake = new Snake();
-    this.apple = new Apple(this.canvasCenter);
+    this.apple = new Apple(canvas.width, canvas.height);
     this.score = 0;
+    this.gameOver = false;
+    if (DEV) {
+      this.params = {
+        snakeStart: {
+          x: this.apple.position.x - 100,
+          y: this.apple.position.y,
+        },
+        snakeLength: 20,
+        snakeSpeed: 1000 / 5,
+        gamePieceWidth: 10,
+      };
+    } else {
+      this.params = {
+        snakeStart: {
+          x: this.canvasCenter.x - 100,
+          y: this.canvasCenter.y,
+        },
+        snakeLength: 20,
+        snakeSpeed: 1000 / 10,
+        gamePieceWidth: 10,
+      };
+    }
   }
 
   initiateGame() {
     this.drawBoard();
     this.drawApple();
-    this.initiateSnake(this.params.snakeLength, this.params.snakeStart);
+    this.initiateSnake(this.params.snakeLength, {
+      x: this.apple.position.x - 100,
+      y: this.apple.position.y,
+    });
     this.scoreBoard.innerText = "0";
   }
 
@@ -235,6 +257,7 @@ class SnakeGame {
   }
 
   redraw() {
+    console.log(this.snake.head.position);
     this.handleOutOfBounds();
     this.handleEatingItself();
     this.handleEatingApple();
@@ -280,8 +303,8 @@ class SnakeGame {
     if (this.isAppleEaten()) {
       this.score++;
       this.scoreBoard.innerText = `${this.score}`;
-      console.log(this.scoreBoard);
       this.growSnake();
+      this.apple = new Apple(canvas.width, canvas.height);
     }
   }
 
