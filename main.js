@@ -21,10 +21,10 @@ function handleArrowKey(direction) {
   }
 }
 
-const display = document.getElementById("display");
-display.addEventListener("click", (e) => {
+const gameOverDisplay = document.getElementById("game-over-display");
+gameOverDisplay.addEventListener("click", (e) => {
   if (e.target.id === "reset") {
-    display.classList.toggle("hidden");
+    gameOverDisplay.classList.toggle("hidden");
     game = newGame();
   }
 });
@@ -44,12 +44,10 @@ class Apple {
 
   isEaten(snakeHead, snakeHeadSize) {
     return !(
-      (
-        snakeHead.position.x >= this.position.x + this.size || // head is RIGHT of apple
-        snakeHead.position.x + snakeHeadSize <= this.position.x || // head is LEFT of apple
-        snakeHead.position.y >= this.position.y + this.size || // head is BELOW apple
-        snakeHead.position.y + snakeHeadSize <= this.position.y
-      ) // head is ABOVE apple
+      snakeHead.position.x >= this.position.x + this.size ||
+      snakeHead.position.x + snakeHeadSize <= this.position.x ||
+      snakeHead.position.y >= this.position.y + this.size ||
+      snakeHead.position.y + snakeHeadSize <= this.position.y
     );
   }
 }
@@ -57,7 +55,6 @@ class Apple {
 class SnakeSegment {
   constructor(position, dims) {
     this.position = position;
-    this.dims = dims;
     this.prev = null;
     this.next = null;
   }
@@ -154,33 +151,25 @@ class SnakeGame {
       x: Math.floor(canvas.width / 2),
       y: Math.floor(canvas.height / 2),
     };
-    this.display = display;
+    this.gameOverDisplay = gameOverDisplay;
     this.scoreBoard = scoreBoard;
-    this.snake = new Snake();
-    this.apple = new Apple(canvas.width, canvas.height);
     this.score = 0;
     this.gameOver = false;
-    if (DEV) {
-      this.params = {
-        snakeStart: {
-          x: this.apple.position.x - 100,
-          y: this.apple.position.y,
-        },
-        snakeLength: 20,
-        snakeSpeed: 1000 / 5,
-        gamePieceWidth: 10,
-      };
-    } else {
-      this.params = {
-        snakeStart: {
-          x: this.canvasCenter.x - 100,
-          y: this.canvasCenter.y,
-        },
-        snakeLength: 20,
-        snakeSpeed: 1000 / 10,
-        gamePieceWidth: 10,
-      };
-    }
+    this.params = {
+      snakeStart: {
+        x: this.canvasCenter.x - 100,
+        y: this.canvasCenter.y,
+      },
+      snakeLength: 20,
+      snakeSpeed: 1000 / 10,
+      gamePieceWidth: 10,
+    };
+    this.snake = new Snake();
+    this.apple = new Apple(
+      canvas.width,
+      canvas.height,
+      this.params.gamePieceWidth
+    );
   }
 
   initiateGame() {
@@ -230,7 +219,7 @@ class SnakeGame {
   }
 
   moveSnakeUp() {
-    if (this.snake.direction === "DOWN") return;
+    if (this.snake.direction === "DOWN" || this.gameOver) return;
 
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
@@ -240,7 +229,7 @@ class SnakeGame {
   }
 
   moveSnakeDown() {
-    if (this.snake.direction === "UP") return;
+    if (this.snake.direction === "UP" || this.gameOver) return;
 
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
@@ -250,7 +239,7 @@ class SnakeGame {
   }
 
   moveSnakeRight() {
-    if (this.snake.direction === "LEFT") return;
+    if (this.snake.direction === "LEFT" || this.gameOver) return;
 
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
@@ -260,7 +249,7 @@ class SnakeGame {
   }
 
   moveSnakeLeft() {
-    if (this.snake.direction === "RIGHT") return;
+    if (this.snake.direction === "RIGHT" || this.gameOver) return;
 
     clearInterval(this.intervalId);
     this.intervalId = setInterval(
@@ -297,8 +286,9 @@ class SnakeGame {
   }
 
   stopGame() {
+    this.gameOver = true;
     clearInterval(this.intervalId);
-    this.display.classList.toggle("hidden");
+    this.gameOverDisplay.classList.toggle("hidden");
   }
 
   handleEatingApple() {
@@ -306,7 +296,11 @@ class SnakeGame {
       this.score++;
       this.scoreBoard.innerText = `${this.score}`;
       this.growSnake();
-      this.apple = new Apple(this.canvas.width, this.canvas.height);
+      this.apple = new Apple(
+        this.canvas.width,
+        this.canvas.height,
+        this.params.gamePieceWidth
+      );
     }
   }
 
@@ -360,7 +354,7 @@ function resizeCanvasToDisplaySize(canvas) {
 function newGame() {
   const snakeGame = new SnakeGame(
     document.getElementById("board"),
-    display,
+    gameOverDisplay,
     document.getElementById("score")
   );
   snakeGame.initiateGame();
