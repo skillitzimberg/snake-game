@@ -34,10 +34,6 @@ class Apple {
       y: Math.floor(Math.random() * yMax),
     };
     this.size = size;
-    this.center = {
-      x: this.position.x + this.size / 2,
-      y: this.position.y + this.size / 2,
-    };
   }
 
   isEaten(snakeHead, snakeHeadSize) {
@@ -51,7 +47,7 @@ class Apple {
 }
 
 class SnakeSegment {
-  constructor(position, dims) {
+  constructor(position) {
     this.position = position;
     this.prev = null;
     this.next = null;
@@ -142,7 +138,7 @@ class Snake {
 class SnakeGame {
   intervalId;
 
-  constructor(canvas, display, scoreBoard) {
+  constructor(canvas, gameOverDisplay, scoreBoard) {
     this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.canvasCenter = {
@@ -164,8 +160,8 @@ class SnakeGame {
     };
     this.snake = new Snake();
     this.apple = new Apple(
-      canvas.width,
-      canvas.height,
+      canvas.width - 100,
+      canvas.height - 100,
       this.params.gamePieceWidth
     );
   }
@@ -295,8 +291,8 @@ class SnakeGame {
       this.scoreBoard.innerText = `${this.score}`;
       this.growSnake();
       this.apple = new Apple(
-        this.canvas.width,
-        this.canvas.height,
+        this.canvas.width - 100,
+        this.canvas.height - 100,
         this.params.gamePieceWidth
       );
     }
