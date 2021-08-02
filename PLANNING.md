@@ -45,6 +45,10 @@
   - display in scoreboard
 - As a PLAYER I expect the game to end if the snake touches itself
 - As a PLAYER I want the apple to randomly place itself on the board after snake consumes the it
+- As a PLAYER I expect that any overlap of the snake head with the apple constitues an eaten apple
+  - define snake head area
+  - define apple area
+  - define a hit as overlapping areas
 
 ## Things I Did NOT Plan For Or Know About
 

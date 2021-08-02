@@ -1,18 +1,8 @@
 const DEV = true;
 
-const canvas = document.getElementById("board");
-const page = document.getElementsByTagName("body")[0];
-page.addEventListener("keydown", (e) => handleArrowKey(e.key));
-
-const display = document.getElementById("display");
-display.addEventListener("click", (e) => {
-  if (e.target.id === "reset") {
-    this.display.classList.toggle("hidden");
-    game = newGame();
-  }
-});
-
-const scoreBoard = document.getElementById("score");
+document
+  .getElementsByTagName("body")[0]
+  .addEventListener("keydown", (e) => handleArrowKey(e.key));
 
 function handleArrowKey(direction) {
   switch (direction) {
@@ -30,19 +20,44 @@ function handleArrowKey(direction) {
       break;
   }
 }
+
+const display = document.getElementById("display");
+display.addEventListener("click", (e) => {
+  if (e.target.id === "reset") {
+    display.classList.toggle("hidden");
+    game = newGame();
+  }
+});
+
 class Apple {
-  constructor(xMax, yMax) {
+  constructor(xMax, yMax, size) {
     this.position = {
       x: Math.floor(Math.random() * xMax),
       y: Math.floor(Math.random() * yMax),
     };
-    console.log(this.position);
+    this.size = size;
+    this.center = {
+      x: this.position.x + this.size / 2,
+      y: this.position.y + this.size / 2,
+    };
+  }
+
+  isEaten(snakeHead, snakeHeadSize) {
+    return !(
+      (
+        snakeHead.position.x >= this.position.x + this.size || // head is RIGHT of apple
+        snakeHead.position.x + snakeHeadSize <= this.position.x || // head is LEFT of apple
+        snakeHead.position.y >= this.position.y + this.size || // head is BELOW apple
+        snakeHead.position.y + snakeHeadSize <= this.position.y
+      ) // head is ABOVE apple
+    );
   }
 }
 
 class SnakeSegment {
-  constructor(position) {
+  constructor(position, dims) {
     this.position = position;
+    this.dims = dims;
     this.prev = null;
     this.next = null;
   }
@@ -53,7 +68,7 @@ class Snake {
     this.head = null;
     this.tail = null;
     this.length = 0;
-    this.direction = "";
+    this.direction = "RIGHT";
   }
 
   addHead(position) {
@@ -133,6 +148,7 @@ class SnakeGame {
   intervalId;
 
   constructor(canvas, display, scoreBoard) {
+    this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.canvasCenter = {
       x: Math.floor(canvas.width / 2),
@@ -170,16 +186,13 @@ class SnakeGame {
   initiateGame() {
     this.drawBoard();
     this.drawApple();
-    this.initiateSnake(this.params.snakeLength, {
-      x: this.apple.position.x - 100,
-      y: this.apple.position.y,
-    });
+    this.initiateSnake(this.params.snakeLength, this.params.snakeStart);
     this.scoreBoard.innerText = "0";
   }
 
   drawBoard() {
     this.ctx.fillStyle = "black";
-    this.ctx.fillRect(0, 0, canvas.width, canvas.height);
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   drawApple() {
@@ -257,7 +270,6 @@ class SnakeGame {
   }
 
   redraw() {
-    console.log(this.snake.head.position);
     this.handleOutOfBounds();
     this.handleEatingItself();
     this.handleEatingApple();
@@ -269,9 +281,9 @@ class SnakeGame {
   isOutOfBounds() {
     if (
       this.snake.head.position.x <= 0 ||
-      this.snake.head.position.x >= canvas.width ||
+      this.snake.head.position.x >= this.canvas.width ||
       this.snake.head.position.y <= 0 ||
-      this.snake.head.position.y >= canvas.height
+      this.snake.head.position.y >= this.canvas.height
     ) {
       return true;
     }
@@ -289,22 +301,12 @@ class SnakeGame {
     this.display.classList.toggle("hidden");
   }
 
-  isAppleEaten() {
-    if (
-      this.snake.head.position.x === this.apple.position.x &&
-      this.snake.head.position.y === this.apple.position.y
-    ) {
-      return true;
-    }
-    return false;
-  }
-
   handleEatingApple() {
-    if (this.isAppleEaten()) {
+    if (this.apple.isEaten(this.snake.head, this.params.gamePieceWidth)) {
       this.score++;
       this.scoreBoard.innerText = `${this.score}`;
       this.growSnake();
-      this.apple = new Apple(canvas.width, canvas.height);
+      this.apple = new Apple(this.canvas.width, this.canvas.height);
     }
   }
 
@@ -356,9 +358,13 @@ function resizeCanvasToDisplaySize(canvas) {
 }
 
 function newGame() {
-  const snakeGame = new SnakeGame(canvas, display, scoreBoard);
+  const snakeGame = new SnakeGame(
+    document.getElementById("board"),
+    display,
+    document.getElementById("score")
+  );
   snakeGame.initiateGame();
   return snakeGame;
 }
-resizeCanvasToDisplaySize(canvas);
+resizeCanvasToDisplaySize(document.getElementById("board"));
 let game = newGame();
