@@ -1,5 +1,3 @@
-const DEV = true;
-
 document
   .getElementsByTagName("body")[0]
   .addEventListener("keydown", (e) => handleArrowKey(e.key));
