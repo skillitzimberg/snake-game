@@ -343,10 +343,7 @@ function resizeCanvasToDisplaySize(canvas) {
   if (canvas.width !== clientWidth || canvas.height !== clientHeight) {
     canvas.width = clientWidth;
     canvas.height = clientHeight;
-    return true;
   }
-
-  return false;
 }
 
 function newGame() {
