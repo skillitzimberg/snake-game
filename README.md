@@ -7,7 +7,7 @@
 
 ## Summary
 
-This the fifth app on my roadmap part of the Software Development Mastermind program.
+This the fifth app on my roadmap part of the Software Development Mastermind program. This was my introduction to the Canvas API. I'm curious to see how this comes into play outside of games. What I really like about this project was getting to go deeper on object-oriented programming.
 
 The expectations for the project are described in [DELIVERABLES](./DELIVERABLES.md).
 
