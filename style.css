@@ -8,6 +8,7 @@ main {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-evenly;
+  margin: 0 0 10px;
   height: 100%;
   font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
   font-size: 1.5em;
@@ -17,6 +18,7 @@ header {
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-evenly;
+  align-items: center;
   border-bottom: 1px solid #333;
 }
 
@@ -25,9 +27,11 @@ canvas {
   height: 95%;
   border: 1px solid #333;
   margin: 0 auto;
+  border-radius: 1em;
 }
 
-footer > p {
+aside > p {
+  display: block;
   text-align: center;
 }
 

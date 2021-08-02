@@ -161,7 +161,7 @@ class SnakeGame {
         y: this.canvasCenter.y,
       },
       snakeLength: 20,
-      snakeSpeed: 1000 / 10,
+      snakeSpeed: 1000 / 20,
       gamePieceWidth: 10,
     };
     this.snake = new Snake();
