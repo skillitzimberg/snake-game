@@ -111,6 +111,16 @@ class Snake {
     this.addHead(newPos);
     this.removeTail();
   }
+
+  isEatingItself(position) {
+    if (
+      this.head.position.x === position.x &&
+      this.head.position.y === position.y
+    ) {
+      return true;
+    }
+    return false;
+  }
 }
 
 class SnakeGame {
@@ -129,7 +139,7 @@ class SnakeGame {
         x: this.canvasCenter.x - 100,
         y: this.canvasCenter.y,
       },
-      snakeLength: 10,
+      snakeLength: 100,
       snakeSpeed: 1000 / 10,
       gamePieceWidth: 10,
     };
@@ -142,6 +152,7 @@ class SnakeGame {
     this.drawBoard();
     this.drawApple();
     this.initiateSnake(this.params.snakeLength, this.params.snakeStart);
+    this.scoreBoard.innerText = "0";
   }
 
   drawBoard() {
@@ -225,6 +236,7 @@ class SnakeGame {
 
   redraw() {
     this.handleOutOfBounds();
+    this.handleEatingItself();
     this.handleEatingApple();
     this.drawBoard();
     this.drawApple();
@@ -245,9 +257,13 @@ class SnakeGame {
 
   handleOutOfBounds() {
     if (this.isOutOfBounds()) {
-      clearInterval(this.intervalId);
-      this.display.classList.toggle("hidden");
+      this.stopGame();
     }
+  }
+
+  stopGame() {
+    clearInterval(this.intervalId);
+    this.display.classList.toggle("hidden");
   }
 
   isAppleEaten() {
@@ -261,12 +277,21 @@ class SnakeGame {
   }
 
   handleEatingApple() {
-    console.log(this.score);
     if (this.isAppleEaten()) {
       this.score++;
       this.scoreBoard.innerText = `${this.score}`;
       console.log(this.scoreBoard);
       this.growSnake();
+    }
+  }
+
+  handleEatingItself() {
+    let current = this.snake.head.next;
+    while (current !== null) {
+      if (this.snake.isEatingItself(current.position)) {
+        this.stopGame();
+      }
+      current = current.next;
     }
   }
 

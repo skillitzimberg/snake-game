@@ -38,13 +38,12 @@
 - As a PLAYER I want to see an apple on the board
   - draw a shape to represent an apple
 - As a PLAYER I want to see the snake get longer when it eats the apple
-
   - add a new segment to the snake head when it touches the apples
-
 - As a PLAYER I want to know my score
   - add a score property to the game class
   - increment when the apple is eaten
   - display in scoreboard
+- As a PLAYER I expect the game to end if the snake touches itself
 
 ## Things I Did NOT Plan For Or Know About
 
